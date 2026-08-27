@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 
 /* FIREBASE */
 import { auth, db } from '@/lib/firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 
 /* CSS */
@@ -18,10 +19,24 @@ interface LikeButtonProps {
   address: string;
 }
 
-export default function LikeButton({ id, title, image, address }: LikeButtonProps) {
+export default function LikeButton({
+  id,
+  title,
+  image,
+  address,
+}: LikeButtonProps) {
   /* 찜하기의 상태 */
   const [isLiked, setIsLiked] = useState(false);
-  const user = auth.currentUser;
+
+  /* 로그인 상태 (비동기 복원을 반영하기 위해 onAuthStateChanged로 구독) */
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
 
   /* id와 user 여부에 따라 실행 (찜하기 사전 확인) */
   useEffect(() => {
@@ -55,7 +70,10 @@ export default function LikeButton({ id, title, image, address }: LikeButtonProp
       setIsLiked(false);
     } else {
       await setDoc(docRef, {
-        id, title, image, address,
+        id,
+        title,
+        image,
+        address,
         createdAt: new Date().toISOString(),
       });
       setIsLiked(true);
@@ -63,7 +81,10 @@ export default function LikeButton({ id, title, image, address }: LikeButtonProp
   };
 
   return (
-    <button className={`${styles.likeBtn} ${isLiked ? styles.active : ''}`} onClick={toggleLike}>
+    <button
+      className={`${styles.likeBtn} ${isLiked ? styles.active : ''}`}
+      onClick={toggleLike}
+    >
       {/* 상태에 따라 다른 아이콘 표시 */}
       {isLiked ? '❤️' : '🤍'}
     </button>

@@ -3,9 +3,6 @@
 /* REACT */
 import { useState, useEffect, useCallback } from 'react';
 
-/* API */
-import { getLocationBasedTours } from '@/lib/api';
-
 /* 컴포넌트 */
 import FullMap from '@/components/FullMap';
 
@@ -37,12 +34,13 @@ export default function MapPage() {
     setLoading(true);
     try {
       /* API 호출 후 데이터 수집 */
-      const data = await getLocationBasedTours(lat, lng);
+      const res = await fetch(`/api/tours/location?lat=${lat}&lng=${lng}`);
+      const data = await res.json();
 
       /* 수집한 데이터 상태에 저장 */
       setItems(data);
     } catch (error) {
-      console.error("데이터 로드 실패:", error);
+      console.error('데이터 로드 실패:', error);
     } finally {
       /* 로딩 종료 */
       setLoading(false);
@@ -53,7 +51,7 @@ export default function MapPage() {
   const handleRefreshLocation = () => {
     /* 위치 정보가 지원이 안되는 경우 */
     if (!navigator.geolocation) {
-      alert("이 브라우저에서는 위치 정보를 지원하지 않습니다.");
+      alert('이 브라우저에서는 위치 정보를 지원하지 않습니다.');
       return;
     }
 
@@ -67,10 +65,10 @@ export default function MapPage() {
         fetchNearbyTours(latitude, longitude);
       },
       (error) => {
-        console.error("위치 정보 획득 실패:", error);
+        console.error('위치 정보 획득 실패:', error);
         setLoading(false);
-        alert("위치 정보 권한을 확인해주세요.");
-      }
+        alert('위치 정보 권한을 확인해주세요.');
+      },
     );
   };
 
@@ -85,8 +83,8 @@ export default function MapPage() {
         <div className={styles.listHeader}>
           <h2>🗺️ 내 주변 탐색</h2>
           <p>총 {items.length}개의 장소가 발견되었어요.</p>
-          <button 
-            onClick={handleRefreshLocation} 
+          <button
+            onClick={handleRefreshLocation}
             className={styles.refreshBtn}
             disabled={loading}
           >
@@ -96,17 +94,31 @@ export default function MapPage() {
 
         <div className={styles.scrollArea}>
           {loading ? (
-            <div className={styles.loadingBox}><p>정보를 불러오는 중...</p></div>
+            <div className={styles.loadingBox}>
+              <p>정보를 불러오는 중...</p>
+            </div>
           ) : (
             <>
               {items.length > 0 ? (
                 items.map((item: any) => (
-                  <Link href={`/detail/${item.contentid}`} key={item.contentid} className={styles.listItem}>
+                  <Link
+                    href={`/detail/${item.contentid}`}
+                    key={item.contentid}
+                    className={styles.listItem}
+                  >
                     <div className={styles.itemText}>
-                      <span className={styles.category}>{CATEGORY_MAP[item.contenttypeid] || '기타'}</span>
+                      <span className={styles.category}>
+                        {CATEGORY_MAP[item.contenttypeid] || '기타'}
+                      </span>
                       <p className={styles.itemTitle}>{item.title}</p>
-                      <p className={styles.itemAddr}>{item.addr1 || "주소 정보 없음"}</p>
-                      {item.dist && <p className={styles.dist}>{Math.round(item.dist / 100) / 10}km 떨어짐</p>}
+                      <p className={styles.itemAddr}>
+                        {item.addr1 || '주소 정보 없음'}
+                      </p>
+                      {item.dist && (
+                        <p className={styles.dist}>
+                          {Math.round(item.dist / 100) / 10}km 떨어짐
+                        </p>
+                      )}
                     </div>
                   </Link>
                 ))

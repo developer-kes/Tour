@@ -12,6 +12,9 @@ import styles from './page.module.css';
 /* NEXT */
 import Link from 'next/link';
 
+/* 타입 */
+import { WishlistItem } from '@/lib/types';
+
 /* FIREBASE */
 import { auth, db } from '@/lib/firebase';
 import { collection, query, onSnapshot, orderBy } from 'firebase/firestore';
@@ -19,7 +22,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 export default function WishlistPage() {
   /* 불러온 찜 목록 데이터 */
-  const [wishlist, setWishlist] = useState<any[]>([]);
+  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
 
   /* 불러오는 로딩 */
   const [loading, setLoading] = useState(true);
@@ -49,9 +52,7 @@ export default function WishlistPage() {
 
         /* onSnapshot으로 실시간 데이터 감지 (즉시 갱신) */
         unsubscribeWishlist = onSnapshot(q, (snapshot) => {
-          const items = snapshot.docs.map((doc) => ({
-            ...doc.data(),
-          }));
+          const items = snapshot.docs.map((doc) => doc.data() as WishlistItem);
           setWishlist(items);
           setLoading(false);
         });

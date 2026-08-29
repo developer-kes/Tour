@@ -12,6 +12,9 @@ import styles from './page.module.css';
 /* NEXT */
 import Link from 'next/link';
 
+/* 타입 */
+import { TourItem } from '@/lib/types';
+
 /* 숫자코드에 따른 한글 변환 타입 */
 const CATEGORY_MAP: { [key: string]: string } = {
   '12': '관광지',
@@ -25,7 +28,7 @@ const CATEGORY_MAP: { [key: string]: string } = {
 };
 
 export default function MapPage() {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<TourItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   /* 데이터 가져오는 로직을 재사용 가능하게 분리 */
@@ -35,7 +38,7 @@ export default function MapPage() {
     try {
       /* API 호출 후 데이터 수집 */
       const res = await fetch(`/api/tours/location?lat=${lat}&lng=${lng}`);
-      const data = await res.json();
+      const data: TourItem[] = await res.json();
 
       /* 수집한 데이터 상태에 저장 */
       setItems(data);

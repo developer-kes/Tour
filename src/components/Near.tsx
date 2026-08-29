@@ -9,6 +9,9 @@ import Card from '@/components/Card';
 /* CSS */
 import styles from './Near.module.css';
 
+/* 타입 */
+import { TourItem } from '@/lib/types';
+
 /* 받아온 위도 경도의 타입 */
 interface NearbySectionProps {
   mapX: string;
@@ -18,7 +21,7 @@ interface NearbySectionProps {
 /* 선택된 시설의 근처 맛집, 숙소, 명소 */
 export default function NearbySection({ mapX, mapY }: NearbySectionProps) {
   const [activeTab, setActiveTab] = useState('39');
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<TourItem[]>([]);
   const [loading, setLoading] = useState(false);
 
   /* 숫자코드에 따른 타이틀 매핑 */
@@ -36,7 +39,7 @@ export default function NearbySection({ mapX, mapY }: NearbySectionProps) {
       const res = await fetch(
         `/api/tours/nearby?mapX=${mapX}&mapY=${mapY}&contentTypeId=${activeTab}`,
       );
-      const data = await res.json();
+      const data: TourItem[] = await res.json();
 
       setItems(data);
       setLoading(false);

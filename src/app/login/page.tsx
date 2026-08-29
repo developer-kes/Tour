@@ -35,7 +35,7 @@ export default function LoginPage() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push('/');
-    } catch (err: any) {
+    } catch {
       setError('이메일 또는 비밀번호가 일치하지 않습니다.');
     }
   };
@@ -47,17 +47,25 @@ export default function LoginPage() {
 
         <form onSubmit={handleLogin}>
           <input
-            type="email" placeholder="이메일 주소" required
-            className={styles.input} value={email}
+            type="email"
+            placeholder="이메일 주소"
+            required
+            className={styles.input}
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            type="password" placeholder="비밀번호" required
-            className={styles.input} value={password}
+            type="password"
+            placeholder="비밀번호"
+            required
+            className={styles.input}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           {error && <p className={styles.errorMsg}>{error}</p>}
-          <button type="submit" className={styles.loginBtn}>로그인</button>
+          <button type="submit" className={styles.loginBtn}>
+            로그인
+          </button>
         </form>
 
         <div className={styles.links}>

@@ -9,11 +9,14 @@ import Card from './Card';
 /* CSS */
 import styles from './Infinite.module.css';
 
+/* 타입 */
+import { TourItem } from '@/lib/types';
+
 export default function InfiniteList({
   initialTours,
   contentTypeId,
 }: {
-  initialTours: any[];
+  initialTours: TourItem[];
   contentTypeId: string;
 }) {
   /* 관광지 데이터 상태 */
@@ -36,7 +39,7 @@ export default function InfiniteList({
     const res = await fetch(
       `/api/tours/category?contentTypeId=${contentTypeId}&pageNo=${nextPage}`,
     );
-    const newTours = await res.json();
+    const newTours: TourItem[] = await res.json();
 
     /* 데이터가 없을경우에 대한 로직 */
     if (newTours.length === 0) {

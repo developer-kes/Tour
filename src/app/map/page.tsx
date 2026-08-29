@@ -103,7 +103,7 @@ export default function MapPage() {
           ) : (
             <>
               {items.length > 0 ? (
-                items.map((item: any) => (
+                items.map((item: TourItem) => (
                   <Link
                     href={`/detail/${item.contentid}`}
                     key={item.contentid}
@@ -119,7 +119,7 @@ export default function MapPage() {
                       </p>
                       {item.dist && (
                         <p className={styles.dist}>
-                          {Math.round(item.dist / 100) / 10}km 떨어짐
+                          {Math.round(Number(item.dist) / 100) / 10}km 떨어짐
                         </p>
                       )}
                     </div>

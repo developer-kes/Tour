@@ -70,7 +70,7 @@ export default function NearbySection({ mapX, mapY }: NearbySectionProps) {
           <div className={styles.loading}>정보를 불러오는 중...</div>
         ) : items.length > 0 ? (
           <div className={styles.scrollContainer}>
-            {items.map((item: any) => (
+            {items.map((item: TourItem) => (
               <div key={item.contentid} className={styles.cardItem}>
                 <Card
                   id={item.contentid}

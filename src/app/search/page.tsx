@@ -45,7 +45,7 @@ export default async function SearchPage({
       {/* 데이터가 있을 경우 카드 컴포넌트로 반복문으로 데이터 전송 없을 경우에 따른 메세지 노출 */}
       {tours.length > 0 ? (
         <div className={styles.cardGrid}>
-          {tours.map((tour: any) => (
+          {tours.map((tour: TourItem) => (
             <Card
               key={tour.contentid}
               id={tour.contentid}

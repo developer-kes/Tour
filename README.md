@@ -132,6 +132,24 @@ flowchart LR
 
 ---
 
+## 🚀 Performance
+
+메인 페이지에서 12.9MB(5760×3840) 원본 배경 이미지가 CSS `background-image`로 그대로 로드되고 있는 걸 Lighthouse로 발견하고, `next/image`의 자동 리사이즈·WebP 변환 최적화를 타도록 수정했습니다.
+
+| 지표 | Before | After |
+| :--- | :---: | :---: |
+| Performance 점수 | 56 | 62 |
+| 전체 페이지 용량 | 15.7MB | **3.1MB** |
+| 이미지 절감 가능분 | 9.1MB | 101KB |
+| LCP (Largest Contentful Paint) | 80.6s | **13.7s** |
+| TTI (Time to Interactive) | 80.6s | **13.7s** |
+
+*(측정 환경: `next build && next start` 프로덕션 빌드, 로컬 Lighthouse, Mobile)*
+
+**남은 개선 과제**: JS 실행 시간(약 11초)이 여전히 병목인데, 원인 중 하나로 지목되는 폰트 파일(Pretendard Variable, 2MB)은 서브셋팅으로 줄일 수 있지만 관광지 이름이 TourAPI에서 실시간으로 오는 동적 데이터라 무분별한 글리프 서브셋팅 시 일부 한글이 깨질 위험이 있어 신중히 접근할 예정입니다.
+
+---
+
 ## 📁 Directory Structure
 
 ```text

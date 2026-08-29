@@ -84,6 +84,7 @@ export default function LikeButton({
     <button
       className={`${styles.likeBtn} ${isLiked ? styles.active : ''}`}
       onClick={toggleLike}
+      aria-label={isLiked ? '찜 해제하기' : '찜하기'}
     >
       {/* 상태에 따라 다른 아이콘 표시 */}
       {isLiked ? '❤️' : '🤍'}

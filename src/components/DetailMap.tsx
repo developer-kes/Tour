@@ -3,13 +3,6 @@
 /* REACT */
 import { useEffect } from 'react';
 
-/* 카카오맵 타입 선언 */
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
-
 /* 카카오맵에 필요한 데이터 타입 */
 interface KakaoMapProps {
   mapX: string;
@@ -30,6 +23,7 @@ export default function KakaoMap({ mapX, mapY, title }: KakaoMapProps) {
     script.onload = () => {
       window.kakao.maps.load(() => {
         const container = document.getElementById('map');
+        if (!container) return;
         const options = {
           /* 문자열이기 때문에 위도와 경도를 Number로 형변환 */
           center: new window.kakao.maps.LatLng(Number(mapY), Number(mapX)),
@@ -38,7 +32,10 @@ export default function KakaoMap({ mapX, mapY, title }: KakaoMapProps) {
 
         const map = new window.kakao.maps.Map(container, options);
 
-        const markerPosition = new window.kakao.maps.LatLng(Number(mapY), Number(mapX));
+        const markerPosition = new window.kakao.maps.LatLng(
+          Number(mapY),
+          Number(mapX),
+        );
         const marker = new window.kakao.maps.Marker({
           position: markerPosition,
         });
@@ -55,7 +52,7 @@ export default function KakaoMap({ mapX, mapY, title }: KakaoMapProps) {
         height: '350px',
         borderRadius: '12px',
         marginTop: '20px',
-        backgroundColor: '#eee'
+        backgroundColor: '#eee',
       }}
     />
   );

@@ -32,6 +32,59 @@
 
 ---
 
+## 🏗 Architecture
+
+```mermaid
+flowchart TB
+    User(("🧑 사용자"))
+
+    subgraph NextApp["Next.js (Vercel)"]
+        direction TB
+        ServerComp["Server Component<br/>(홈 · 목록 · 검색 · 상세)"]
+        ClientComp["Client Component<br/>(무한스크롤 · 지도 · 찜하기 · 로그인)"]
+        APIRoute["Route Handler<br/>/api/tours/*"]
+    end
+
+    TourAPI[("한국관광공사<br/>TourAPI 4.0")]
+    Kakao[("Kakao Maps SDK")]
+    Firebase[("Firebase<br/>Auth · Firestore")]
+
+    User --> ServerComp
+    User --> ClientComp
+
+    ServerComp -->|"서버에서 직접 호출"| TourAPI
+    ClientComp -->|"fetch"| APIRoute
+    APIRoute -->|"서버에서 직접 호출"| TourAPI
+
+    ClientComp -->|"지도 렌더링"| Kakao
+    ClientComp -->|"로그인 · 찜하기"| Firebase
+```
+
+### API 키 노출 구조 개선 (Before / After)
+
+클라이언트 컴포넌트가 외부 API 호출 함수를 직접 import하면 `NEXT_PUBLIC_` 환경변수가 브라우저 JS 번들에 그대로 포함되어 API 키가 노출된다는 걸 발견하고, 자체 서버 Route Handler를 경유하도록 구조를 변경했습니다.
+
+```mermaid
+flowchart LR
+    subgraph Before["🔴 Before: API 키 노출"]
+        direction TB
+        B1(("브라우저<br/>Client Component")) -->|"lib/api.ts를 직접 import<br/>(API 키가 JS 번들에 포함됨)"| B2[("TourAPI")]
+    end
+
+    subgraph After["🟢 After: 서버로 격리"]
+        direction TB
+        A1(("브라우저<br/>Client Component")) -->|"fetch (키 없음)"| A2["Route Handler<br/>/api/tours/*"]
+        A2 -->|"API 키는 서버에만 존재"| A3[("TourAPI")]
+    end
+
+    classDef danger fill:#ffe3e3,stroke:#e03131,color:#000
+    classDef safe fill:#e6fcf5,stroke:#0ca678,color:#000
+    class B1,B2 danger
+    class A1,A2,A3 safe
+```
+
+---
+
 ## 🌟 Key Features & Tech Insights
 
 ### 1. 위치 기반 실시간 주변 탐색 (`/map`)

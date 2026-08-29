@@ -49,6 +49,7 @@ export default function LoginPage() {
           <input
             type="email"
             placeholder="이메일 주소"
+            aria-label="이메일 주소"
             required
             className={styles.input}
             value={email}
@@ -57,6 +58,7 @@ export default function LoginPage() {
           <input
             type="password"
             placeholder="비밀번호"
+            aria-label="비밀번호"
             required
             className={styles.input}
             value={password}

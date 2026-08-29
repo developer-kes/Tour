@@ -82,6 +82,7 @@ export default function SignupPage() {
           <input
             type="text"
             placeholder="닉네임"
+            aria-label="닉네임"
             required
             className={styles.input}
             value={nickname}
@@ -90,6 +91,7 @@ export default function SignupPage() {
           <input
             type="email"
             placeholder="이메일 주소"
+            aria-label="이메일 주소"
             required
             className={styles.input}
             value={email}
@@ -98,6 +100,7 @@ export default function SignupPage() {
           <input
             type="password"
             placeholder="비밀번호 (6자 이상)"
+            aria-label="비밀번호"
             required
             className={styles.input}
             value={password}

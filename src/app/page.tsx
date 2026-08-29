@@ -1,14 +1,15 @@
 /* CSS */
-import styles from "./page.module.css";
+import styles from './page.module.css';
 
 /* 컴포넌트 */
 import Card from '@/components/Card';
 import SearchInput from '@/components/SearchInput';
-import CurationTabs from "@/components/Curation";
-import HomeSlider from "@/components/Slider";
+import CurationTabs from '@/components/Curation';
+import HomeSlider from '@/components/Slider';
 
 /* NEXT */
-import Link from "next/link";
+import Link from 'next/link';
+import Image from 'next/image';
 
 /* API */
 import { getPopularTours, getToursByCategory } from '@/lib/api';
@@ -26,14 +27,23 @@ export default async function Home() {
   /* 인기 데이터 호출 및 타입 지정 */
   const [popularTours, festivals, restaurants] = await Promise.all([
     getPopularTours() as Promise<TourItem[]>,
-    getToursByCategory("15", 10) as Promise<TourItem[]>,
-    getToursByCategory("39", 6) as Promise<TourItem[]>,
+    getToursByCategory('15', 10) as Promise<TourItem[]>,
+    getToursByCategory('39', 6) as Promise<TourItem[]>,
   ]);
 
   return (
     <main>
       {/* 검색 */}
       <section className={styles.intro}>
+        <Image
+          src="/images/background.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className={styles.introImage}
+        />
+        <div className={styles.introOverlay} />
         <div className={styles.search}>
           <h2>어디로 여행을 떠나시나요?</h2>
           <SearchInput />
@@ -108,7 +118,9 @@ export default async function Home() {
       <section className={styles.festivalSection}>
         <div className={styles.sectionHeader}>
           <h3>🎊 지금 가야 할 축제</h3>
-          <Link href="/list?type=15" className={styles.moreBtn}>더보기</Link>
+          <Link href="/list?type=15" className={styles.moreBtn}>
+            더보기
+          </Link>
         </div>
         <HomeSlider items={festivals} defaultType="15" />
       </section>
@@ -117,7 +129,9 @@ export default async function Home() {
       <section className={styles.recommend}>
         <div className={styles.sectionHeader}>
           <h3>🍚 실패 없는 지역 맛집</h3>
-          <Link href="/list?type=39" className={styles.moreBtn}>더보기</Link>
+          <Link href="/list?type=39" className={styles.moreBtn}>
+            더보기
+          </Link>
         </div>
         <HomeSlider items={restaurants} defaultType="39" />
       </section>

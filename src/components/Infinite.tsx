@@ -61,7 +61,7 @@ export default function InfiniteList({
     <>
       <div className={styles.cardGrid}>
         {/* 반복문을 통한 데이터 props 전송 */}
-        {tours.map((tour: any) => (
+        {tours.map((tour: TourItem) => (
           <Card
             key={tour.contentid}
             id={tour.contentid}

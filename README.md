@@ -3,6 +3,8 @@
 > **"터치 한 번으로 발견하는 대한민국의 숨은 명소"**
 > 한국관광공사 공공데이터를 활용한 사용자 맞춤형 여행 정보 큐레이션 서비스
 
+![CI](https://github.com/developer-kes/Tour/actions/workflows/ci.yml/badge.svg)
+
 ---
 
 ## 🔗 Link
@@ -23,17 +25,19 @@
 ## 🛠 Tech Stack
 
 ### Frontend
-
 - **Framework**: Next.js (App Router)
 - **Language**: TypeScript
 - **Styling**: CSS Modules
 - **Library**: Swiper (Slider)
 
 ### Backend & API
-
 - **Backend**: Firebase (Authentication, Firestore)
 - **API**: 한국관광공사 TourAPI 4.0, Kakao Maps SDK
 - **Deployment**: Vercel
+
+### Testing & CI
+- **Unit/Component Test**: Vitest, React Testing Library
+- **CI**: GitHub Actions (PR마다 타입체크 · 린트 · 테스트 자동 실행)
 
 ---
 
@@ -165,39 +169,46 @@ _(측정 환경: `next build && next start` 프로덕션 빌드, 로컬 Lighthou
 ## 📁 Directory Structure
 
 ```text
-src/
-├── app/                         # Next.js App Router 및 페이지 구성
-│   ├── api/tours/                # TourAPI 프록시 Route Handler (API 키 서버 격리)
-│   │   ├── category/route.ts
-│   │   ├── location/route.ts
-│   │   └── nearby/route.ts
-│   ├── detail/[id]/             # 관광지 상세 페이지 (동적 라우팅)
-│   ├── join/                    # 회원가입 페이지
-│   ├── list/                    # 관광지 목록 페이지
-│   ├── login/                   # 로그인 페이지
-│   ├── map/                     # 내 주변 탐색 (지도) 페이지
-│   ├── search/                  # 키워드 검색 페이지
-│   ├── wish/                    # 찜 목록(Wishlist) 페이지
-│   ├── globals.css              # 전역 스타일 설정
-│   ├── layout.tsx               # 공통 레이아웃 (헤더, 푸터 포함)
-│   ├── loading.tsx              # 전역 로딩 UI
-│   └── page.tsx                 # 메인(홈) 페이지
-├── components/                  # 재사용 가능한 UI 컴포넌트 및 스타일
-│   ├── Card.tsx                 # 관광지 카드 아이템 (Card.module.css 포함)
-│   ├── Curation.tsx             # 메인 페이지 테마별 큐레이션 키워드 칩
-│   ├── DetailImage.tsx          # 상세 페이지 배너 이미지
-│   ├── DetailMap.tsx            # 상세 페이지용 단일 지도
-│   ├── Footer.tsx               # 하단 푸터 (Footer.module.css 포함)
-│   ├── FullMap.tsx              # 메인 지도 서비스 컴포넌트
-│   ├── Header.tsx               # 상단 네비게이션 (Header.module.css 포함)
-│   ├── Infinite.tsx             # 무한 스크롤 처리 컴포넌트
-│   ├── Like.tsx                 # 찜하기 버튼 및 로직
-│   ├── Near.tsx                 # 상세 페이지 내 반경 기반 주변 시설 추천
-│   ├── Slider.tsx               # Swiper 기반의 메인 섹션 슬라이더
-│   └── SearchInput.tsx          # 검색창 입력 컴포넌트
-└── lib/                         # 외부 서비스 연동 및 공통 타입
-    ├── api.ts                   # 한국관광공사 TourAPI 호출 로직 (fetchTourAPI 공통 함수)
-    ├── firebase.ts              # Firebase Authentication & Firestore 설정
-    ├── kakao.d.ts                # 카카오맵 SDK 타입 선언
-    └── types.ts                   # TourAPI 응답 타입 정의 (TourItem, TourDetail 등)
+Tour/
+├── .github/
+│   └── workflows/
+│       └── ci.yml               # GitHub Actions (타입체크 · 린트 · 테스트)
+├── src/
+│   ├── app/                     # Next.js App Router 및 페이지 구성
+│   │   ├── api/tours/            # TourAPI 프록시 Route Handler (API 키 서버 격리)
+│   │   │   ├── category/route.ts
+│   │   │   ├── location/route.ts
+│   │   │   └── nearby/route.ts
+│   │   ├── detail/[id]/         # 관광지 상세 페이지 (동적 라우팅)
+│   │   ├── join/                # 회원가입 페이지
+│   │   ├── list/                # 관광지 목록 페이지
+│   │   ├── login/                # 로그인 페이지
+│   │   ├── map/                  # 내 주변 탐색 (지도) 페이지
+│   │   ├── search/               # 키워드 검색 페이지
+│   │   ├── wish/                 # 찜 목록(Wishlist) 페이지
+│   │   ├── globals.css           # 전역 스타일 설정
+│   │   ├── layout.tsx            # 공통 레이아웃 (헤더, 푸터 포함)
+│   │   ├── loading.tsx           # 전역 로딩 UI
+│   │   └── page.tsx              # 메인(홈) 페이지
+│   ├── components/               # 재사용 가능한 UI 컴포넌트 및 스타일
+│   │   ├── Card.tsx              # 관광지 카드 아이템 (Card.module.css 포함)
+│   │   ├── Curation.tsx          # 메인 페이지 테마별 큐레이션 키워드 칩
+│   │   ├── DetailImage.tsx       # 상세 페이지 배너 이미지
+│   │   ├── DetailMap.tsx         # 상세 페이지용 단일 지도
+│   │   ├── Footer.tsx            # 하단 푸터 (Footer.module.css 포함)
+│   │   ├── FullMap.tsx           # 메인 지도 서비스 컴포넌트
+│   │   ├── Header.tsx            # 상단 네비게이션 (Header.module.css 포함)
+│   │   ├── Infinite.tsx          # 무한 스크롤 처리 컴포넌트
+│   │   ├── Like.tsx              # 찜하기 버튼 및 로직
+│   │   ├── Like.test.tsx         # Like 컴포넌트 테스트
+│   │   ├── Near.tsx              # 상세 페이지 내 반경 기반 주변 시설 추천
+│   │   ├── Slider.tsx            # Swiper 기반의 메인 섹션 슬라이더
+│   │   └── SearchInput.tsx       # 검색창 입력 컴포넌트
+│   └── lib/                      # 외부 서비스 연동 및 공통 타입
+│       ├── api.ts                # 한국관광공사 TourAPI 호출 로직 (fetchTourAPI 공통 함수)
+│       ├── api.test.ts           # api.ts 단위 테스트
+│       ├── firebase.ts           # Firebase Authentication & Firestore 설정
+│       ├── kakao.d.ts            # 카카오맵 SDK 타입 선언
+│       └── types.ts              # TourAPI 응답 타입 정의 (TourItem, TourDetail 등)
+└── vitest.config.mts             # Vitest 설정
 ```

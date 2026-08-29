@@ -1,7 +1,7 @@
 'use client';
 
 /* REACT */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 /* 컴포넌트 */
 import Card from './Card';
@@ -51,11 +51,6 @@ export default function InfiniteList({
     }
     setLoading(false);
   };
-
-  /* 카테고리가 다른 목록 리스트로 갈 경우 useEffect로 갈아끼우기 */
-  useEffect(() => {
-    setTours(initialTours);
-  }, [initialTours, contentTypeId]);
 
   return (
     <>
